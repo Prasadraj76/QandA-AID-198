@@ -1,25 +1,25 @@
-🧠 QANDA: Chat with Any Webpage Using LLMs
-This project enables users to load any webpage, convert its content into embeddings, and chat with it using LLMs. You can interact via a Streamlit interface or through a FastAPI backend.
+# 🧠 QANDA: Chat with Any Webpage Using LLMs
 
-🚀 Features
-🌐 Load and parse webpage content (e.g., Gutenberg books)
+This project enables users to **load any webpage**, convert its content into **embeddings**, and chat with it using **LLMs**. You can interact via a **Streamlit interface** or through a **FastAPI backend**.
 
-🧩 Chunk text for embedding
+---
 
-🔍 Store in Chroma vector DB
+## 🚀 Features
 
-🤖 Ask questions with RAG (Retrieval-Augmented Generation) using Google Gemini 1.5 Flash
+* 🌐 Load and parse webpage content (e.g., Gutenberg books)
+* 🧹 Chunk text for embedding
+* 🔍 Store in **Chroma vector DB**
+* 🤖 Ask questions with RAG using **Google Gemini 1.5 Flash**
+* 🖥️ Dual Interface:
 
-🖥️ Dual Interface:
+  * `app_streamlit.py` — Streamlit App
+  * FastAPI (`main.py`, `routes.py`) — Backend API
 
-app_streamlit.py for interactive Streamlit app
+---
 
-FastAPI (main.py + routes.py) for backend service
+## 📂 Project Structure
 
-📂 Project Structure
-bash
-Copy
-Edit
+```
 QANDA/
 │
 ├── app/
@@ -28,125 +28,152 @@ QANDA/
 │   ├── routes.py          # API endpoints
 │   ├── pipeline.py        # Core logic (load, chunk, embed, query)
 │
-├── chroma_db/             # Chroma vector DB persistence
+├── chroma_db/             # Chroma vector DB
 ├── app_streamlit.py       # Streamlit app
-├── chunks.py              # Text chunking logic (modular)
-├── embeddings.py          # Embedding logic (Google Generative AI)
-├── llm.py                 # Gemini LLM prompt and chain
-├── load_data.py           # Web loader module
+├── chunks.py              # Text chunking logic
+├── embeddings.py          # Embedding logic
+├── llm.py                 # LLM prompt + chain
+├── load_data.py           # Web loader
 ├── prompts.py             # Prompt templates
-├── notebook.ipynb         # (Optional) Development notebook
-├── requirements.txt       # Python dependencies
-├── .env                   # Google API keys
-├── .gitignore
-└── README.md
-🧪 Installation
-1. Clone the repo
-bash
-Copy
-Edit
-git clone https://github.com/your-username/QANDA.git
-cd QANDA
-2. Set up a virtual environment
-bash
-Copy
-Edit
+├── .env                   # API Keys
+├── requirements.txt       # Dependencies
+├── README.md              # This file
+```
+
+---
+
+## 🧪 Installation
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/Prasadraj76/QandA-AID-198.git
+cd QandA-AID-198
+```
+
+### 2. Set up a virtual environment
+
+#### On Windows:
+
+```bash
 python -m venv QandAvenv
-# Activate it:
-# On Windows:
 QandAvenv\Scripts\activate
-# On macOS/Linux:
+```
+
+#### On macOS/Linux:
+
+```bash
+python3 -m venv QandAvenv
 source QandAvenv/bin/activate
-3. Install dependencies
-bash
-Copy
-Edit
+```
+
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
-🔐 Environment Setup
-Create a .env file with your Google Generative AI API Key:
+```
 
-ini
-Copy
-Edit
-GOOGLE_API_KEY=your_google_genai_key_here
-🖥️ Streamlit UI
-Run the Streamlit interface:
+---
 
-bash
-Copy
-Edit
+## 🔐 Environment Setup
+
+Create a `.env` file:
+
+```
+GOOGLE_API_KEY=your_google_genai_key
+```
+
+Make sure your API key has access to:
+
+* `models/embedding-001`
+* `models/gemini-1.5-flash`
+
+---
+
+## 🖥️ Using the Streamlit App
+
+```bash
 streamlit run app_streamlit.py
-Usage
-Enter a webpage URL (e.g., a Project Gutenberg .txt link)
+```
 
-Ask natural language questions about the content
+1. Enter a webpage URL (e.g., a Gutenberg `.txt` file)
+2. Ask a natural language question
+3. Get context-aware answers
 
-View accurate, context-based answers
+---
 
-⚙️ FastAPI Backend
-Run the server
-bash
-Copy
-Edit
+## ⚙️ FastAPI Backend
+
+### Start the API Server
+
+```bash
 uvicorn app.main:app --reload
-Endpoints
-POST /load
-Loads and indexes the webpage content:
+```
 
-json
-Copy
-Edit
+### Endpoints
+
+#### `POST /load`
+
+Load and index a webpage:
+
+```json
 {
   "url": "https://www.gutenberg.org/cache/epub/100/pg100.txt"
 }
-POST /ask
-Ask questions about the loaded content:
+```
 
-json
-Copy
-Edit
+#### `POST /ask`
+
+Ask a question about the indexed content:
+
+```json
 {
   "question": "Who is Hamlet?"
 }
-Returns:
+```
 
-json
-Copy
-Edit
+#### Sample Response
+
+```json
 {
   "answer": "Hamlet is the Prince of Denmark...",
-  "sources": ["<snippet from the text>"]
+  "sources": ["sources"]
 }
-📦 Dependencies
-streamlit
+```
 
-fastapi
+---
 
-uvicorn
+## 📦 Dependencies
 
-langchain
+* `streamlit`
+* `fastapi`
+* `uvicorn`
+* `langchain`
+* `langchain_chroma`
+* `langchain_google_genai`
+* `chromadb`
+* `python-dotenv`
+* `pydantic`
 
-langchain_chroma
+---
 
-langchain_google_genai
+## 📌 Notes
 
-chromadb
+* Ensure your Google API key has access to both `embedding-001` and `gemini-1.5-flash`.
+* Webpage parsing is handled by:
+  `langchain_community.document_loaders.WebBaseLoader`
 
-python-dotenv
+---
 
-pydantic
+## 🧱 Roadmap
 
-📌 Tips
-Ensure your Google API key has access to both embedding-001 and gemini-1.5-flash.
+* ✅ Dual mode: Streamlit & FastAPI
+* 📄 Add PDF, YouTube support
+* ☁️ Deploy to HuggingFace or Render
+* 📌 Add query history tracking
 
-Webpage parsing is handled by langchain_community.document_loaders.WebBaseLoader.
+---
 
-📈 Roadmap
-✅ Dual interface (Streamlit + FastAPI)
+## 👨‍💻 Author
 
-🚧 Support PDFs, YouTube transcripts
-
-🚀 Deployment via Hugging Face Spaces or Render
-
-🧑‍💻 Author
-Prasadraj — Built with ❤️ using LangChain + Gemini
+**Prasadraj** — Built with ❤️ using LangChain + Gemini
